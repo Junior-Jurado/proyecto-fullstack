@@ -1,0 +1,1 @@
+{"version":3,"file":"css/bundle.css","mappings":"AAAA;IACI,sBAAsB;IACtB,YAAY;;AAEhB,C","sources":["webpack://proyecto-fullstack/./frontend/styles/styles.css"],"sourcesContent":["body {\r\n    background: blueviolet;\r\n    color: white;\r\n\r\n}"],"names":[],"sourceRoot":""}
