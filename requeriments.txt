@@ -1,0 +1,16 @@
+express
+http
+cors
+morgan
+pg-promise
+bluebird
+bcryptjs
+passport-jwt
+passport
+jsonwebtoken
+
+
+request --save-dev mocha
+mocha
+supertest
+-D jest supertest
