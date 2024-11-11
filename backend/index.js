@@ -15,7 +15,8 @@ const path = require('path');
 * RUTAS
 */
 const customers = require('./routes/customerRoute');
-const vehicles = require('./routes/vehicleRoute')
+const vehicles = require('./routes/vehicleRoute');
+
 
 const port  = process.env.PORT || 3000;
 

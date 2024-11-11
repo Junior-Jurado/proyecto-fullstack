@@ -5,7 +5,7 @@ module.exports = {
     async getAll(req, res, next) {
         try {
             const data = await Customer.getAll(); 
-            console.log(`Clientes: ${data}`);
+            
             return res.status(201).json({
                 success: true,
                 message: "Lista de clientes",
