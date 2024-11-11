@@ -26,4 +26,18 @@ Administrator.create = async (administrator) => {
     ]);
 };
 
+Administrator.updateVehicleStatus = async (vehicle_id) =>{
+    const sql = `
+    UPDATE Vehicles
+    SET availability_status =
+        CASE
+            WHEN availability_status = 'available' THEN 'unavailable'
+            ELSE 'available'
+        END
+    WHERE vehicle_id = $1
+    RETURNING availability_status
+    `;
+    return db.oneOrNone(sql, [vehicle_id]);
+};
+
 module.exports = Administrator;

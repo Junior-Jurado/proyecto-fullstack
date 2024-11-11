@@ -44,7 +44,6 @@ CREATE TABLE Bookings (
     end_date DATE NOT NULL,
     pickup_location VARCHAR(100),
     dropoff_location VARCHAR(100),
-    status VARCHAR(15) DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed', 'canceled', 'completed')),
     FOREIGN KEY (customer_id) REFERENCES Customers(customer_id) ON DELETE CASCADE,
     FOREIGN KEY (vehicle_id) REFERENCES Vehicles(vehicle_id) ON DELETE SET NULL
 );
@@ -90,13 +89,3 @@ VALUES (
     'johndoe', 
     'password123'
 );
-    
-insert into vehicles 
-(vehicle_id, brand, model, year, category, daily_price, availability_status)
-values
-(1, 'brand', 'model', 2000, 'category', 150, 'available');
-
-insert into vehicles 
-(vehicle_id, brand, model, year, category, daily_price, availability_status)
-values
-(2, 'brand', 'model', 2004, 'category', 170, 'unavailable');

@@ -24,5 +24,30 @@ module.exports = {
                 return res.status(500).json({succes: false, message: 'Hubo un error al registrar al administrador', error: error});
             }
         }
+    },
+    async update(req, res, next){
+        try{
+            const { vehicle_id } = req.body;
+            const data = await Administrator.updateVehicleStatus(vehicle_id);
+            if(data){
+                return res.status(200).json({
+                    succes: true,
+                    message: 'Estado del vehículo actualizado correctamente',
+                    data,
+                });
+            }else{
+                return res.status(404).json({
+                    succes: false,
+                    message: 'Vehículo no encontrado',
+                });
+            }
+        }catch(error){
+            console.error(`Error: ${error}`);
+            return res.status(500).json({
+                succes: false,
+                message: 'Hubo un error al actualizar el estado del vehículo',
+                error,
+            });
+        }
     }
 }

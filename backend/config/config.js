@@ -24,7 +24,7 @@ const databaseConfig = {
     'host': '127.0.0.1',
     'port': 5432,
     'database': process.env.DATABASE,
-    'user': process.env.DB_USER,
+    'user': process.env.USER,
     'password': process.env.PASSWORD,
     'ssl': false
 };
