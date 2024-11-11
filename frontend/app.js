@@ -2,6 +2,7 @@ import './styles/app.css';
 // import './styles/homeScreen.css'
 
 import CostumerService from './services/CostumerService';
+import UI from './UI';
 
 const costumerService = new CostumerService();
 
@@ -22,26 +23,8 @@ async function login() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    console.log('Email:', email);
-    console.log('Password:', password);
-
-    try {
-        const result = await costumerService.loginUser(email, password);
-        console.log(result);
-
-        if (result.success) {
-            localStorage.setItem('userId', result.data.id);
-
-            setTimeout(() => {
-                window.location.href = 'HomeScreen.html';
-            }, 1000);
-        } else {
-            alert(result.message || 'Error al iniciar sesión');
-        }
-    } catch (error) {
-        console.error('Error en el login:', error);
-        alert('Hubo un error al procesar tu solicitud');
-    }
+    const ui = new UI();
+    ui.login(email, password);
 }
 
 async function register() {
