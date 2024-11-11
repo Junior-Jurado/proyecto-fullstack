@@ -30,7 +30,8 @@ CREATE TABLE Administrators (
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
-    phone VARCHAR(15)
+    phone VARCHAR(15),
+    password VARCHAR(255) NOT NULL -- Added the password field
 );
 
 -- Table Booking
@@ -44,8 +45,8 @@ CREATE TABLE Bookings (
     pickup_location VARCHAR(100),
     dropoff_location VARCHAR(100),
     status VARCHAR(15) DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed', 'canceled', 'completed')),
-    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id) ON DELETE CASCADE,
-    FOREIGN KEY (vehicle_id) REFERENCES Vehicle(vehicle_id) ON DELETE SET NULL
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id) ON DELETE CASCADE,
+    FOREIGN KEY (vehicle_id) REFERENCES Vehicles(vehicle_id) ON DELETE SET NULL
 );
 
 -- Table Message
@@ -55,7 +56,7 @@ CREATE TABLE Messages (
     customer_id INT NOT NULL,
     content TEXT NOT NULL,
     sent_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id) ON DELETE CASCADE
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id) ON DELETE CASCADE
 );
 
 -- Table Rating
@@ -66,8 +67,8 @@ CREATE TABLE Ratings (
     customer_id INT NOT NULL,
     score INT CHECK (score BETWEEN 1 AND 5),
     comment TEXT,
-    FOREIGN KEY (booking_id) REFERENCES Booking(booking_id) ON DELETE CASCADE,
-    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id) ON DELETE CASCADE
+    FOREIGN KEY (booking_id) REFERENCES Bookings(booking_id) ON DELETE CASCADE,
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id) ON DELETE CASCADE
 );
 
 
@@ -90,3 +91,12 @@ VALUES (
     'password123'
 );
     
+insert into vehicles 
+(vehicle_id, brand, model, year, category, daily_price, availability_status)
+values
+(1, 'brand', 'model', 2000, 'category', 150, 'available');
+
+insert into vehicles 
+(vehicle_id, brand, model, year, category, daily_price, availability_status)
+values
+(2, 'brand', 'model', 2004, 'category', 170, 'unavailable');
