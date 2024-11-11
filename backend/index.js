@@ -16,6 +16,7 @@ const path = require('path');
 */
 const customers = require('./routes/customerRoute');
 const vehicles = require('./routes/vehicleRoute');
+const administrators = require('./routes/administratorRoute');
 
 
 const port  = process.env.PORT || 3000;
@@ -45,6 +46,7 @@ app.set('port', port);
 // Llamando a las rutas
 customers(app);
 vehicles(app);
+administrators(app);
 
 server.listen(port, '0.0.0.0', function() {
     console.log("API projects " + process.pid + " iniciada ...\nEn el puerto " + port);
