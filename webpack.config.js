@@ -39,8 +39,21 @@ module.exports = {
             }
             
         }),
+        new HtmlWebpackPlugin({
+            template: './frontend/HomeScreen.html',
+            filename: 'HomeScreen.html',
+            minify: {
+                collapseWhitespace: true,
+                removeComments: true,
+                removeRedudantAttributes: true,
+                removeScriptTypeAtributtes: true,
+                removeStyleLinkAttributes: true,
+                useShortDoctype: true
+            }
+            
+        }),
         new MiniCssExtractPlugin({
-            filename: 'css/bundle.css'
+            filename: 'css/bundle.css',
         })
     ],
     devtool: 'source-map'
