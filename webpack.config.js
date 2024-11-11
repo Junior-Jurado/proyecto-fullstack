@@ -39,9 +39,24 @@ module.exports = {
             }
             
         }),
+        new HtmlWebpackPlugin({
+            template: './frontend/register.html', 
+            filename: 'register.html', 
+            minify: {
+                collapseWhitespace: true,
+                removeComments: true,
+                removeRedundantAttributes: true,
+                removeScriptTypeAtributtes: true,
+                removeStyleLinkAttributes: true,
+                useShortDoctype: true
+            }
+        }),
+
         new MiniCssExtractPlugin({
             filename: 'css/bundle.css'
         })
     ],
+
+
     devtool: 'source-map'
 }
