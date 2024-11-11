@@ -6,6 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const  devMode = process.env.NODE_ENV !== 'production';
 
 module.exports = {
+    mode: 'development',
     entry: './frontend/app.js',
     output: {
         path: path.join(__dirname, 'backend/public'),
