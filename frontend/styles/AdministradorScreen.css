@@ -1,0 +1,36 @@
+/* Ajustes de margen y color para el encabezado principal */
+h1 {
+    font-size: 24px;
+}
+
+/* Sección principal */
+.reservas {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Personalización de botones */
+.btn-primary {
+    background-color: #4A90E2;
+    border-color: #4A90E2;
+}
+
+.btn-primary:hover {
+    background-color: #357ABD;
+    border-color: #357ABD;
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+}
+
+/* Estilos opcionales para el pie de página */
+footer {
+    font-size: 14px;
+}
