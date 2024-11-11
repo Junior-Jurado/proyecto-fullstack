@@ -63,12 +63,36 @@ module.exports = {
                 useShortDoctype: true
             }
         }),
-
+        new HtmlWebpackPlugin({
+            template: './frontend/AdministradorScreen.html', 
+            filename: 'AdministradorScreen.html', 
+            minify: {
+                collapseWhitespace: true,
+                removeComments: true,
+                removeRedundantAttributes: true,
+                removeScriptTypeAtributtes: true,
+                removeStyleLinkAttributes: true,
+                useShortDoctype: true
+            }
+        }),
+        new HtmlWebpackPlugin({
+            template: './frontend/registerAdmin.html', 
+            filename: 'registerAdmin.html', 
+            minify: {
+                collapseWhitespace: true,
+                removeComments: true,
+                removeRedundantAttributes: true,
+                removeScriptTypeAtributtes: true,
+                removeStyleLinkAttributes: true,
+                useShortDoctype: true
+            }
+        }),
         new MiniCssExtractPlugin({
             filename: 'css/bundle.css',
         })
     ],
 
 
-    devtool: 'source-map'
+    devtool: 'source-map',
+
 }

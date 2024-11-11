@@ -26,7 +26,7 @@ Customer.create = async (customer) => {
             username,
             password
         )
-    VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING id
+    VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING customer_id
     `;
 
     return db.oneOrNone(sql,[
