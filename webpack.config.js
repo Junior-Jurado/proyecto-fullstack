@@ -6,6 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const  devMode = process.env.NODE_ENV !== 'production';
 
 module.exports = {
+    mode: 'development',
     entry: './frontend/app.js',
     output: {
         path: path.join(__dirname, 'backend/public'),
@@ -38,9 +39,36 @@ module.exports = {
             }
             
         }),
+        new HtmlWebpackPlugin({
+            template: './frontend/register.html', 
+            filename: 'register.html', 
+            minify: {
+                collapseWhitespace: true,
+                removeComments: true,
+                removeRedundantAttributes: true,
+                removeScriptTypeAtributtes: true,
+                removeStyleLinkAttributes: true,
+                useShortDoctype: true
+            }
+        }),
+        new HtmlWebpackPlugin({
+            template: './frontend/HomeScreen.html', 
+            filename: 'HomeScreen.html', 
+            minify: {
+                collapseWhitespace: true,
+                removeComments: true,
+                removeRedundantAttributes: true,
+                removeScriptTypeAtributtes: true,
+                removeStyleLinkAttributes: true,
+                useShortDoctype: true
+            }
+        }),
+
         new MiniCssExtractPlugin({
-            filename: 'css/bundle.css'
+            filename: 'css/bundle.css',
         })
     ],
+
+
     devtool: 'source-map'
 }
