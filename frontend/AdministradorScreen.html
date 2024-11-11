@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración</title>
+    <!-- Enlace de Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="AdministradorScreen.css">
+</head>
+<body>
+    <header class="bg-primary text-white text-center py-3">
+        <h1>Panel de Administración - Reservas de Vehículos</h1>
+    </header>
+
+    <main class="container my-4">
+        <section class="reservas">
+            <h2 class="text-primary">Lista de Reservas</h2>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover mt-3">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>ID Reserva</th>
+                            <th>Cliente</th>
+                            <th>Vehículo</th>
+                            <th>Fecha de Recogida</th>
+                            <th>Fecha de Entrega</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#12345</td>
+                            <td>Juan Pérez</td>
+                            <td>Ford Fiesta</td>
+                            <td>10/11/2024</td>
+                            <td>15/11/2024</td>
+                            <td>Reservado</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm">Cambiar Estado</button>
+                                <button class="btn btn-danger btn-sm ml-2">Cancelar</button>
+                            </td>
+                        </tr>
+                        <!-- Más filas de ejemplo -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-dark text-white text-center py-2">
+        <p>&copy; 2024 Compañía de Alquiler de Vehículos</p>
+    </footer>
+</body>
+</html>
