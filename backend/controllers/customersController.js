@@ -1,14 +1,11 @@
 const Customer = require('../models/customer');
-const bcrypt = require('bcryptjs');
-const keys = require('../config/keys');
-
 
 module.exports = {
     
     async getAll(req, res, next) {
         try {
             const data = await Customer.getAll(); 
-            console.log(`Clientes: ${data}`);
+            
             return res.status(201).json({
                 success: true,
                 message: "Lista de clientes",
@@ -25,21 +22,12 @@ module.exports = {
 
     async register(req, res, next) {
         try {
-            const user = req.body;
-            const data = await User.create(user);
-
-            const token = jwt.sign({id: data.id, email: user.email},
-                keys.secretOrKey, {
-                //expiresIn
-            });
-            
+            const costumer = req.body;
+            const data = await Customer.create(costumer);            
 
             const myData = {
-                id: data.id,
-                usuario: user.user_name,
-                email: user.email,
-                rol: user.rol,
-                session_token: `JWT ${token}`
+                id: data.customer_id,
+                ...costumer
             };
 
             return res.status(201).json({
@@ -59,6 +47,29 @@ module.exports = {
                 console.error('Error al crear el usuario:', error);
                 return res.status(500).json({ success: false, message: 'Hubo un error al registrar al usuario', error: error });
             }
+        }
+    },
+
+    async login(req, res, next) {
+        try {
+            const { email, password } = req.body;
+            const result = await Customer.login(email, password);
+    
+            if (result.success) {
+                return res.status(200).json(result);
+            } else {
+                return res.status(400).json({
+                    success: false,
+                    message: result.message,
+                });
+            }
+        } catch (error) {
+            console.error('Error en el login:', error);
+            return res.status(500).json({
+                success: false,
+                message: 'Hubo un error al procesar el login',
+                error: error.message,
+            });
         }
     }
 }
