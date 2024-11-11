@@ -37,14 +37,6 @@ async function register() {
     const password = document.getElementById('password').value;
     const repeat_password = document.getElementById('repeat_password').value;
 
-    console.log('Nombre:', first_name);
-    console.log('Apellido:', last_name);
-    console.log('Email:', email);
-    console.log('Teléfono:', phone);
-    console.log('Dirección:', address);
-    console.log('Nombre de usuario:', username);
-    console.log('Contraseña:', password);
-
     if (password !== repeat_password) {
         alert('Las contraseñas no coinciden');
         return;

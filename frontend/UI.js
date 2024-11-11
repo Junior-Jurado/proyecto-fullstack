@@ -2,21 +2,18 @@ import CostumerService from "./services/CostumerService";
 import VehicleService from "./services/VehicleService";
 
 const costumerService = new CostumerService();
-const vehicleService = new VehicleServiceService();
- 
+const vehicleService = new VehicleService();  // corrected line
 
 class UI {
 
     async login(email, password) {
-        
-
         try {
-            const result = await vehicleService.login(email, password);
+            const result = await costumerService.loginUser(email, password);
             console.log(result);
-    
+
             if (result.success) {
                 localStorage.setItem('userId', result.data.id);
-    
+
                 setTimeout(() => {
                     window.location.href = 'HomeScreen.html';
                 }, 1000);
@@ -32,7 +29,6 @@ class UI {
     renderVehicles() {}
 
     makeBooking() {}
-
 }
 
 export default UI;
