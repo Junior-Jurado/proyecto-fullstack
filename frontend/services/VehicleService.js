@@ -1,5 +1,4 @@
 class VehicleService {
-
     constructor() {
         this.URI = 'http://localhost:3000/api/vehicles';
     }
@@ -16,4 +15,4 @@ class VehicleService {
     }
 }
 
-module.exports = VehicleService;
+export default VehicleService;

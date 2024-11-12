@@ -26,7 +26,29 @@ class UI {
         }
     }
 
-    renderVehicles() {}
+    async renderVehicles() {
+        const vehicles = await vehicleService.getAvailables();
+        const vehiclesContainer = document.getElementById("vehiculos-container");
+
+        vehiclesContainer.innerHTML = '';  // Limpiar el contenedor antes de agregar nuevos vehículos
+
+        vehicles.forEach(vehicle => {
+            const vehicleCard = `
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="${vehicle.image}" class="card-img-top" alt="${vehicle.model}">
+                        <div class="card-body">
+                            <h5 class="card-title">${vehicle.brand} ${vehicle.model}</h5>
+                            <p class="card-text">Año: ${vehicle.year}</p>
+                            <p class="card-text">Categoría: ${vehicle.category}</p>
+                            <p class="card-text">Precio Diario: $${vehicle.daily_price}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            vehiclesContainer.innerHTML += vehicleCard;  // Agregar la tarjeta del vehículo al contenedor
+        });
+    }
 
     makeBooking() {}
 }

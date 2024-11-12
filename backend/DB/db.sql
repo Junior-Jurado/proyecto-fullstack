@@ -20,7 +20,8 @@ CREATE TABLE Vehicles (
     year INT CHECK (year >= 1900 AND year <= EXTRACT(YEAR FROM CURRENT_DATE)),
     category VARCHAR(50),
     daily_price NUMERIC(10, 2) NOT NULL,
-    availability_status VARCHAR(15) DEFAULT 'available' CHECK (availability_status IN ('available', 'unavailable'))
+    availability_status VARCHAR(15) DEFAULT 'available' CHECK (availability_status IN ('available', 'unavailable')),
+    image VARCHAR(200)
 );
 
 -- Table Administrator
@@ -89,4 +90,20 @@ VALUES (
     'johndoe', 
     'password123'
 );
+
+
+INSERT INTO Vehicles (brand, model, year, category, daily_price, availability_status, image)
+VALUES
+    ('Toyota', 'Corolla', 2020, 'Sedan', 45.99, 'available', 'https://cdn.motor1.com/images/mgl/6ZzYpG/s1/toyota-corolla-hybrid-2024.webp'),
+    ('Honda', 'Civic', 2019, 'Sedan', 50.00, 'available', 'https://www.elcarrocolombiano.com/wp-content/uploads/2016/07/20160719-HONDA-CIVIC-01.jpg.webp'),
+    ('Ford', 'Mustang', 2021, 'Coupe', 120.00, 'available', 'https://autodigital.com.co/wp-content/uploads/2024/04/Ford-Mstang-GT-toma-aire-Autodigital.jpg'),
+    ('Chevrolet', 'Impala', 2018, 'Sedan', 55.75, 'available', 'https://storagegohistorics.blob.core.windows.net/stock/4029-0-medium.jpg?v=63847393114330'),
+    ('BMW', 'X5', 2022, 'SUV', 150.00, 'available', 'https://acnews.blob.core.windows.net/imgnews/extralarge/NAZ_2fb92f06d2224e88aace8d73c850884e.jpg'),
+    ('Audi', 'A4', 2020, 'Sedan', 70.50, 'available', 'https://autos93.com/cdn/shop/files/7F9A0CD5-C65A-4E3F-AD9D-90AB5F1ADA82_1024x1024@2x.jpg?v=1715120167'),
+    ('Mercedes-Benz', 'E-Class', 2021, 'Sedan', 85.00, 'available', 'https://www.autoblog.com/.image/c_limit%2Ccs_srgb%2Cq_auto:good%2Cw_376/MjA5MDg5MjQ3MTczODc5NDA4/image-placeholder-title.webp'),
+    ('Nissan', 'Altima', 2017, 'Sedan', 40.00, 'available', 'https://www.elcarrocolombiano.com/wp-content/webp-express/webp-images/uploads/2022/06/20220609-NISSAN-ALTIMA-2023-PORTADA.jpg.webp'),
+    ('Kia', 'Sportage', 2023, 'SUV', 65.00, 'available', 'https://metrokia.co/wp-content/uploads/2022/08/sportage-nq5-1.png'),
+    ('Hyundai', 'Sonata', 2019, 'Sedan', 49.99, 'available', 'https://vehicle-images.dealerinspire.com/3a4a-110005802/KMHL54JJ7RA098704/62e6914ce2836d0424df134da34e2476.jpg');
+
+
     

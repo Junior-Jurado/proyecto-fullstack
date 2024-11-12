@@ -1,12 +1,18 @@
 import './styles/app.css';
-// import './styles/homeScreen.css'
+import './styles/homeScreen.css';
 
 import CostumerService from './services/CostumerService';
 import UI from './UI';
 
 const costumerService = new CostumerService();
+const ui = new UI();
 
 window.addEventListener('DOMContentLoaded', () => {
+    // Cuando el DOM se haya cargado completamente, carga los vehículos automáticamente
+    if (document.title === "Inicio - Alquiler de Vehículos") {
+        ui.renderVehicles();  // Llama a la función renderVehicles desde la UI de forma automática
+    }
+
     const loginButton = document.getElementById('login');
     const registerButton = document.getElementById('register-btn');
 
@@ -53,8 +59,6 @@ async function register() {
             password
         });
 
-        console.log(result);
-
         if (result.success) {
             localStorage.setItem('userId', result.data.id);
 
@@ -70,9 +74,7 @@ async function register() {
     }
 }
 
-
 window.addEventListener('DOMContentLoaded', (event) => {
     const userId = localStorage.getItem('userId');
-    console.log(userId)
+    console.log(userId);
 });
-
