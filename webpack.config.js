@@ -87,6 +87,18 @@ module.exports = {
                 useShortDoctype: true
             }
         }),
+        new HtmlWebpackPlugin({
+            template: './frontend/CarInfo.html', 
+            filename: 'CarInfo.html', 
+            minify: {
+                collapseWhitespace: true,
+                removeComments: true,
+                removeRedundantAttributes: true,
+                removeScriptTypeAtributtes: true,
+                removeStyleLinkAttributes: true,
+                useShortDoctype: true
+            }
+        }),
         new MiniCssExtractPlugin({
             filename: 'css/bundle.css',
         })

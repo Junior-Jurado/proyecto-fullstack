@@ -23,14 +23,19 @@ window.addEventListener('DOMContentLoaded', () => {
     if (registerButton) {
         registerButton.addEventListener('click', register);
     }
+
+    // Recuperar el id del usuario desde localStorage
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+        console.log("Usuario logueado con ID:", userId);
+    }
 });
 
 async function login() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    const ui = new UI();
-    ui.login(email, password);
+    ui.login(email, password);  // Utiliza la instancia de UI para iniciar sesión
 }
 
 async function register() {
@@ -60,8 +65,7 @@ async function register() {
         });
 
         if (result.success) {
-            localStorage.setItem('userId', result.data.id);
-
+            localStorage.setItem('userId', result.data.id); // Guardamos el ID del usuario en el localStorage
             setTimeout(() => {
                 window.location.href = 'index.html';
             }, 1000);
@@ -74,8 +78,22 @@ async function register() {
     }
 }
 
-window.addEventListener('DOMContentLoaded', (event) => {
+async function reserveCar(carId) {
     const userId = localStorage.getItem('userId');
-    console.log(userId);
-});
+    if (!userId) {
+        alert('Debes iniciar sesión para hacer una reserva');
+        return;
+    }
 
+    // Aquí puedes agregar el código para hacer la reserva de coche con el userId y carId
+    console.log('Reservando el coche con ID:', carId, 'para el usuario con ID:', userId);
+}
+
+// Añadimos la función para manejar la selección del vehículo
+function selectVehicle(vehicleId) {
+    // Guarda el ID del vehículo en localStorage
+    localStorage.setItem('vehicleId', vehicleId);
+
+    // Redirige a la página carInfo.html
+    window.location.href = 'carInfo.html';
+}

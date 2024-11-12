@@ -13,6 +13,17 @@ class VehicleService {
         const data = await res.json();
         return data;
     }
+    
+    async getById(id) {
+        const res = await fetch(`${this.URI}/getById/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        const data = await res.json();
+        return data;
+    }
 }
 
 export default VehicleService;
