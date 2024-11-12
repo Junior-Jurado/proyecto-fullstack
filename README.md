@@ -6,11 +6,12 @@ GoDrive Rentals es una aplicación web diseñada para facilitar el alquiler y la
 
 # Autores
 
-- Barrios Jimenez Johan felipe.
+- Barrios Jimenez Johan Felipe.
 
-- Jurado Vargas Germán Eduado.
+- Jurado Vargas Germán Eduardo.
 
 - Lis Cruz Nicolás.
 
-- Vera Soto Julián david.
+- Vera Soto Julián David.
 
+ 

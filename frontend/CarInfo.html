@@ -1,0 +1,52 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración</title>
+    <!-- Enlace de Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./styles/CarInfo.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <img src="https://www.autodato.com/wp-content/uploads/2017/11/Ford-Fiesta-2018-1.jpg.webp" class="card-img-top" alt="Ford Fiesta">
+            <div class="card-body">
+                <h5 class="card-title">Ford Fiesta</h5>
+                <p class="card-text">Compacto, ideal para la ciudad.</p>
+
+                <!-- Formulario de detalles adicionales -->
+                <form>
+                    <div class="form-group">
+                        <label for="rentalDays">Días de alquiler</label>
+                        <input type="number" class="form-control" id="rentalDays" placeholder="Ingrese los días de alquiler">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pickupLocation">Lugar de recogida</label>
+                        <input type="text" class="form-control" id="pickupLocation" placeholder="Ingrese el lugar de recogida">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dropoffLocation">Lugar de entrega</label>
+                        <input type="text" class="form-control" id="dropoffLocation" placeholder="Ingrese el lugar de entrega">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rentalPrice">Precio de alquiler</label>
+                        <input type="number" class="form-control" id="rentalPrice" placeholder="Ingrese el precio de alquiler por día">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="additionalInfo">Información adicional</label>
+                        <textarea class="form-control" id="additionalInfo" rows="3" placeholder="Especifique cualquier detalle adicional"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Reservar vehículo</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
