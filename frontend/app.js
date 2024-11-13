@@ -1,7 +1,11 @@
 import './styles/app.css';
-// import './styles/homeScreen.css'
+import './styles/homeScreen.css'
+import './styles/AdministradorScreen.css'
+import './styles/loginAdmin.css'
 
 import CostumerService from './services/CostumerService';
+
+
 
 const costumerService = new CostumerService();
 

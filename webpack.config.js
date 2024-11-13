@@ -76,8 +76,20 @@ module.exports = {
             }
         }),
         new HtmlWebpackPlugin({
-            template: './frontend/registerAdmin.html', 
-            filename: 'registerAdmin.html', 
+            template: './frontend/loginAdmin.html', 
+            filename: 'loginAdmin.html', 
+            minify: {
+                collapseWhitespace: true,
+                removeComments: true,
+                removeRedundantAttributes: true,
+                removeScriptTypeAtributtes: true,
+                removeStyleLinkAttributes: true,
+                useShortDoctype: true
+            }
+        }),
+        new HtmlWebpackPlugin({
+            template: './frontend/CarInfo.html', 
+            filename: 'CarInfo.html', 
             minify: {
                 collapseWhitespace: true,
                 removeComments: true,
