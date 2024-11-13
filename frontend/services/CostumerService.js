@@ -3,7 +3,6 @@ class CostumerService {
     constructor() {
         this.URI = 'http://localhost:3000/api/customers';
     }
-
     async loginUser(email, password) {
         const res = await fetch(`${this.URI}/login`, {
             method: 'POST',
@@ -15,7 +14,6 @@ class CostumerService {
                 password: password
             })  
         });
-
         const data = await res.json();
         console.log(data);
         return data;
