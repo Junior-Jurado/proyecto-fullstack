@@ -1,4 +1,5 @@
 const Booking = require('../models/booking');
+const { changeStateAvailable } = require('../models/vehicle');
 
 module.exports = {
     
@@ -120,6 +121,30 @@ module.exports = {
             });
         }
     },
+
+    async changeStateBooking(req, res, next) {
+        try {
+            const { id, state } = req.body;
+    
+            const booking = await Booking.changeStateBooking(id, state);
+
+            if (booking) {
+                return res.status(200).json(booking);
+            } else {
+                return res.status(404).json({
+                    success: false,
+                    message: `No se encontró la reserva ${id}.`
+                });
+            }
+        } catch (error) {
+            console.log(`Error: ${error}`);
+            return res.status(501).json({
+                success: false,
+                message: `Hubo un problema al intentar obtener la reserva.`
+            });
+        }
+
+    }
     
 
 
