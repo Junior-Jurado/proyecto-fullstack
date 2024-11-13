@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservas Usuario</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="AdministradorScreen.css">
+    <style>
+        .card-custom {
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .vehicle-image {
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px 0 0 8px;
+        }
+        .cancel-btn {
+            background-color: #dc3545;
+            color: #fff;
+        }
+        .cancel-btn:hover {
+            background-color: #c82333;
+        }
+        .back-arrow img {
+            width: 24px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Encabezado -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a href="#" onclick="history.back()" class="back-arrow mr-2">
+                <img src="https://img.icons8.com/ios-filled/24/ffffff/left.png" alt="Flecha de regreso">
+            </a>
+            <span class="navbar-brand mx-auto">Vehículos Reservados</span>
+        </div>
+    </nav>
+    
+    <!-- Contenido principal -->
+    <div class="container mt-4">
+        <div class="row" id="bookings-container">
+            <!-- Las tarjetas de reserva se renderizarán aquí mediante JavaScript -->
+        </div>
+
+        <!-- Botón para volver a la pantalla de inicio -->
+        <button id="home-button" class="btn btn-primary mt-4">Volver a inicio</button>
+    </div>
+
+    <!-- Scripts de JavaScript -->
+    <script src="app.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.0/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

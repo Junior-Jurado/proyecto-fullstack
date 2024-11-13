@@ -53,7 +53,7 @@ Booking.create = (booking) => {
 
 } 
 
-Booking.viewBookingByUser = (idUser) => {
+Booking.viewBookingByUser = (id) => {
     const sql = `
         SELECT 
             * 
@@ -61,10 +61,24 @@ Booking.viewBookingByUser = (idUser) => {
             Bookings 
         WHERE 
             customer_id = $1
-        RETURNING vehicle_id
     `;
 
-    return db.oneOrNone(sql, idUser);
+    return db.manyOrNone(sql, id);
+}
+
+Booking.deleteBooking = (idUser, idVehicle) => {
+    const sql = `
+    DELETE
+    FROM 
+        bookings
+    WHERE 
+        customer_id = $1
+    AND 
+        vehicle_id = $2
+     RETURNING booking_id`
+   ;
+    
+    return db.oneOrNone(sql, [idUser, idVehicle]);
 }
 
 module.exports = Booking;

@@ -24,6 +24,29 @@ class BookingService {
         const result = await res.json();
         return result; 
     }
+
+    async getBookingsByUser(idUser) {
+        const res = await fetch(`${this.URI}/user/${idUser}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        const result = await res.json();
+        return result; 
+
+    }
+
+    async deleteBooking(idUser, idVehicle) {
+        const res = await fetch(`${this.URI}/delete/user/${idUser}/vehicle/${idVehicle}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        const result = await res.json();
+        return result; 
+    }
 }
 
 export default BookingService;

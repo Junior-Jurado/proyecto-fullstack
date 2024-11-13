@@ -76,6 +76,18 @@ module.exports = {
             }
         }),
         new HtmlWebpackPlugin({
+            template: './frontend/reservasCustomer.html', 
+            filename: 'reservasCustomer.html', 
+            minify: {
+                collapseWhitespace: true,
+                removeComments: true,
+                removeRedundantAttributes: true,
+                removeScriptTypeAtributtes: true,
+                removeStyleLinkAttributes: true,
+                useShortDoctype: true
+            }
+        }),
+        new HtmlWebpackPlugin({
             template: './frontend/registerAdmin.html', 
             filename: 'registerAdmin.html', 
             minify: {

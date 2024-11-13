@@ -14,6 +14,23 @@ const vehiclesService = new VehicleService();
 const ui = new UI();
 
 window.addEventListener('DOMContentLoaded', () => {
+
+    if (document.title === "Reservas Usuario") {
+        const userId = localStorage.getItem('userId');
+    
+        if (userId) {
+            console.log("ID del usuario logueado en ReservasCustomer:", userId)
+            loadUserBookings(userId);
+        } else {
+            mostrarSinReservas();
+        }
+    
+        // Redirigir a HomeScreen si el usuario no tiene reservas
+        document.getElementById('home-button').addEventListener('click', () => {
+            window.location.href = 'HomeScreen.html';
+        });
+    }
+
     // Cuando el DOM se haya cargado completamente, carga los vehículos automáticamente
     if (document.title === "Inicio - Alquiler de Vehículos") {
         ui.renderVehicles();  // Llama a la función renderVehicles desde la UI de forma automática
@@ -240,5 +257,126 @@ if (isCarInfoPage()) {
             <p><strong>Nombre:</strong> ${userData.name}</p>
             <p><strong>Email:</strong> ${userData.email}</p>
         `;
+    }
+}
+async function cargarReservas(idUser) {
+    try {
+        const result = await bookingsService.getBookingsByUser(idUser);
+        if (result.success && result.data.length > 0) {
+            mostrarReservas(result.data);
+        } else {
+            mostrarSinReservas();
+        }
+    } catch (error) {
+        console.error('Error al cargar las reservas:', error);
+        mostrarSinReservas();
+    }
+}
+
+function mostrarReservas(bookings) {
+    const bookingList = document.getElementById('booking-list');
+    if (bookingList) {
+        bookingList.innerHTML = '';
+        bookings.forEach(booking => {
+            const bookingElement = document.createElement('div');
+            bookingElement.classList.add('booking-item');
+            bookingElement.innerHTML = `
+                <h3>Reserva #${booking.booking_id}</h3>
+                <p><strong>Inicio:</strong> ${new Date(booking.start_date).toLocaleDateString()}</p>
+                <p><strong>Fin:</strong> ${new Date(booking.end_date).toLocaleDateString()}</p>
+                <p><strong>Recogida:</strong> ${booking.pickup_location}</p>
+                <p><strong>Devolución:</strong> ${booking.dropoff_location}</p>
+                <p><strong>Descripción:</strong> ${booking.description}</p>
+            `;
+            bookingList.appendChild(bookingElement);
+        });
+    }
+}
+
+function mostrarSinReservas() {
+    const bookingList = document.getElementById('booking-list');
+    const noBookings = document.getElementById('no-bookings');
+
+    if (bookingList) bookingList.style.display = 'none';
+    if (noBookings) noBookings.style.display = 'block';
+}
+
+async function loadUserBookings(idUser) {
+    // Obtener las reservas del usuario
+    const response = await bookingsService.getBookingsByUser(idUser);
+    console.log(response); // Muestra la respuesta en consola para ver el formato exacto
+
+    const bookingsContainer = document.querySelector('.container .row');
+    bookingsContainer.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevas tarjetas
+
+    // Verificar si la respuesta tiene status falso
+    if (!response.success) {
+        bookingsContainer.innerHTML = '<p>No tienes reservas hasta ahora.</p>';
+        return;
+    }
+
+    // Acceder a los datos de las reservas (response.data)
+    const bookings = response.data;
+
+    // Verificar si hay reservas
+    if (bookings.length === 0) {
+        bookingsContainer.innerHTML = '<p>No tienes reservas en este momento.</p>';
+        return;
+    }
+
+    // Iterar sobre las reservas y generar tarjetas
+    for (const booking of bookings) {
+        // Obtener el vehículo asociado a la reserva
+        const vehicleData = await vehiclesService.getById(booking.vehicle_id);
+        console.log(vehicleData); // Ver los datos del vehículo en consola
+
+        // Calcular los días alquilados
+        const startDate = new Date(booking.start_date);
+        const endDate = new Date(booking.end_date);
+        const daysRented = Math.ceil((endDate - startDate) / (1000 * 3600 * 24)); // Calcular los días
+
+        // Crear HTML para cada tarjeta de vehículo con los datos obtenidos
+        const bookingCard = document.createElement('div');
+        bookingCard.classList.add('col-md-6');
+        bookingCard.innerHTML = `
+            <div class="card card-custom shadow-sm">
+                <div class="row no-gutters">
+                    <div class="col-md-5">
+                        <img src="${vehicleData.image || 'https://via.placeholder.com/200'}" 
+                             class="img-fluid rounded-start vehicle-image" alt="Imagen del ${vehicleData.brand} ${vehicleData.model}">
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-body">
+                            <h5 class="card-title">${vehicleData.brand} ${vehicleData.model}</h5>
+                            <p class="card-text">Precio por día: <strong>$${vehicleData.daily_price}</strong></p>
+                            <p class="card-text">Días alquilados: <strong>${daysRented}</strong></p>
+                            <p class="card-text">Total: <strong>$${(daysRented * parseFloat(vehicleData.daily_price)).toFixed(2)}</strong></p>
+                            <button class="btn cancel-btn btn-block mt-3">Cancelar Reserva</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Obtener el botón "Cancelar Reserva" después de agregar el HTML
+        const cancelBtn = bookingCard.querySelector('.cancel-btn');
+        console.log(cancelBtn); // Verificar si el botón fue encontrado
+
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', async () => {
+                // Llamadas asincrónicas para cancelar la reserva y actualizar el estado del vehículo
+                try {
+                    await bookingsService.deleteBooking(idUser, booking.vehicle_id);
+                    await vehiclesService.changeAvailable(booking.vehicle_id);
+        
+                    window.location.reload();
+                } catch (error) {
+                    console.error('Hubo un error al cancelar la reserva o actualizar el estado del vehículo:', error);
+                }
+            });
+        }
+
+        // Agregar la tarjeta al contenedor
+        bookingsContainer.appendChild(bookingCard);
     }
 }
