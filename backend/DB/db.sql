@@ -50,24 +50,14 @@ CREATE TABLE Bookings (
     FOREIGN KEY (vehicle_id) REFERENCES Vehicles(vehicle_id) ON DELETE SET NULL
 );
 
--- Table Message
-DROP TABLE IF EXISTS Messages CASCADE;
-CREATE TABLE Messages (
-    message_id SERIAL PRIMARY KEY,
-    customer_id INT NOT NULL,
-    content TEXT NOT NULL,
-    sent_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id) ON DELETE CASCADE
-);
-
 -- Table Rating
 DROP TABLE IF EXISTS Ratings CASCADE;
 CREATE TABLE Ratings (
     rating_id SERIAL PRIMARY KEY,
     booking_id INT NOT NULL,
-    customer_id INT NOT NULL,
     score INT CHECK (score BETWEEN 1 AND 5),
     comment TEXT,
+    sent_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (booking_id) REFERENCES Bookings(booking_id) ON DELETE CASCADE,
     FOREIGN KEY (customer_id) REFERENCES Customers(customer_id) ON DELETE CASCADE
 );

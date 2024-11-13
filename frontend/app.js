@@ -243,6 +243,7 @@ async function loadUserBookings(idUser) {
     }
 
     const bookings = response.data;
+    console.log(bookings);
 
     if (bookings.length === 0) {
         bookingsContainer.innerHTML = '<p>No tienes reservas en este momento.</p>';
