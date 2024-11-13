@@ -11,6 +11,32 @@ window.addEventListener('DOMContentLoaded', () => {
     // Cuando el DOM se haya cargado completamente, carga los vehículos automáticamente
     if (document.title === "Inicio - Alquiler de Vehículos") {
         ui.renderVehicles();  // Llama a la función renderVehicles desde la UI de forma automática
+        
+        // Recuperar el id del usuario desde localStorage
+        const userId = localStorage.getItem('userId');
+        if (userId) {
+            console.log("Usuario logueado con ID:", userId); // Imprime el ID del usuario en consola
+        } else {
+            console.log("No hay usuario logueado.");
+        }
+    }
+
+    if (document.title === "Información del Vehículo") {
+        // Agregar el evento al botón "Volver"
+        const backButton = document.getElementById('backButton');
+        if (backButton) {
+            backButton.addEventListener('click', () => {
+                window.location.href = 'HomeScreen.html'; // Redirige al Home
+            });
+        }
+
+        // Añadir evento al formulario de reserva para redirigir al Home al hacer la reserva
+        const reservationForm = document.querySelector('form');
+        reservationForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // Evita el envío del formulario
+            // Aquí agregar lógica para enviar la reserva, si es necesario
+            window.location.href = 'HomeScreen.html'; // Redirige al Home tras hacer la reserva
+        });
     }
 
     const loginButton = document.getElementById('login');
@@ -22,12 +48,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
     if (registerButton) {
         registerButton.addEventListener('click', register);
-    }
-
-    // Recuperar el id del usuario desde localStorage
-    const userId = localStorage.getItem('userId');
-    if (userId) {
-        console.log("Usuario logueado con ID:", userId);
     }
 });
 
@@ -78,22 +98,83 @@ async function register() {
     }
 }
 
-async function reserveCar(carId) {
-    const userId = localStorage.getItem('userId');
-    if (!userId) {
-        alert('Debes iniciar sesión para hacer una reserva');
-        return;
-    }
-
-    // Aquí puedes agregar el código para hacer la reserva de coche con el userId y carId
-    console.log('Reservando el coche con ID:', carId, 'para el usuario con ID:', userId);
+function isCarInfoPage() {
+    return window.location.pathname.includes('CarInfo.html');
 }
 
-// Añadimos la función para manejar la selección del vehículo
-function selectVehicle(vehicleId) {
-    // Guarda el ID del vehículo en localStorage
-    localStorage.setItem('vehicleId', vehicleId);
 
-    // Redirige a la página carInfo.html
-    window.location.href = 'carInfo.html';
+if (isCarInfoPage()) {
+    window.onload = function () {
+        // Obtener los IDs del vehículo y del usuario desde localStorage
+        const selectedVehicleId = localStorage.getItem('selectedVehicleId');
+        const userId = localStorage.getItem('userId');
+        const vehicleImage = localStorage.getItem('vehicleImage');  // Obtener la URL de la imagen
+
+        // Verificar si los valores están presentes en el localStorage
+        if (selectedVehicleId && userId && vehicleImage) {
+            console.log("ID del vehículo seleccionado en CarInfo.html:", selectedVehicleId);
+            console.log("ID del usuario en CarInfo.html:", userId);
+
+            // Aquí puedes realizar peticiones al backend para obtener más información sobre el vehículo
+            fetchVehicleInfo(selectedVehicleId);
+            fetchUserInfo(userId);
+
+            // Mostrar la imagen del vehículo
+            const vehicleImageElement = document.getElementById('vehicle-image');
+            vehicleImageElement.src = vehicleImage;  // Asignar la URL de la imagen
+        } else {
+            console.log("No se encontraron los IDs o la imagen en localStorage.");
+            alert("No se pudo cargar la información del vehículo o del usuario.");
+        }
+    };
+
+    // Función para obtener información sobre el vehículo con el ID proporcionado
+    function fetchVehicleInfo(vehicleId) {
+        // Realiza una llamada fetch a tu API o fuente de datos para obtener los detalles del vehículo
+        fetch(`https://miapi.com/vehicles/${vehicleId}`)
+            .then(response => response.json())
+            .then(vehicleData => {
+                console.log("Datos del vehículo:", vehicleData);
+                displayVehicleInfo(vehicleData);
+            })
+            .catch(error => {
+                console.error("Error al obtener información del vehículo:", error);
+            });
+    }
+
+    // Función para obtener información sobre el usuario con el ID proporcionado
+    function fetchUserInfo(userId) {
+        // Realiza una llamada fetch a tu API o fuente de datos para obtener los detalles del usuario
+        fetch(`https://miapi.com/users/${userId}`)
+            .then(response => response.json())
+            .then(userData => {
+                console.log("Datos del usuario:", userData);
+                displayUserInfo(userData);
+            })
+            .catch(error => {
+                console.error("Error al obtener información del usuario:", error);
+            });
+    }
+
+    // Función para mostrar la información del vehículo en la página
+    function displayVehicleInfo(vehicleData) {
+        // Aquí puedes actualizar los elementos HTML para mostrar la información del vehículo
+        const vehicleTitle = document.getElementById('vehicle-title');
+        const vehicleDescription = document.getElementById('vehicle-description');
+
+        vehicleTitle.textContent = `${vehicleData.brand} ${vehicleData.model}`;
+        vehicleDescription.textContent = `Año: ${vehicleData.year} | Categoría: ${vehicleData.category}`;
+    }
+
+    // Función para mostrar la información del usuario en la página
+    function displayUserInfo(userData) {
+        // Aquí puedes actualizar los elementos HTML para mostrar la información del usuario
+        const userInfoDiv = document.getElementById('user-info');
+        userInfoDiv.innerHTML = `
+            <h2>Información del Usuario</h2>
+            <p><strong>ID de Usuario:</strong> ${userData.id}</p>
+            <p><strong>Nombre:</strong> ${userData.name}</p>
+            <p><strong>Email:</strong> ${userData.email}</p>
+        `;
+    }
 }

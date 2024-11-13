@@ -5,17 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Información del Vehículo</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="./styles/CarInfo.css">
 </head>
 <body>
+    <!-- Cabecera con el ícono de flecha hacia atrás -->
+    <nav class="navbar navbar-light">
+        <a href="HomeScreen.html" class="navbar-brand">
+            <i class="fas fa-arrow-left"></i> Volver a Home
+        </a>
+    </nav>
+
     <div class="container mt-5">
         <div class="card">
+            <!-- Imagen del vehículo cargada desde el localStorage -->
             <img id="vehicle-image" class="card-img-top" alt="Imagen del vehículo">
             <div class="card-body">
                 <h5 id="vehicle-title" class="card-title"></h5>
                 <p id="vehicle-description" class="card-text"></p>
 
-                <form>
+                <form id="reservation-form">
                     <div class="form-group">
                         <label for="startDate">Fecha de inicio</label>
                         <input type="date" class="form-control" id="startDate" placeholder="Ingrese la fecha de inicio">
@@ -47,15 +56,8 @@
         </div>
     </div>
 
+    <script src="app.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Aquí importas y ejecutas el archivo UI.js -->
-    <script type="module">
-        import UI from './UI.js';
-
-        const ui = new UI();
-        ui.init();  // Inicializa la carga de la información del vehículo
-    </script>
 </body>
 </html>
