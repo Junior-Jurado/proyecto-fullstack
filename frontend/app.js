@@ -1,5 +1,6 @@
 import './styles/app.css';
 import './styles/homeScreen.css';
+import './styles/loginAdmin.css';
 
 import CostumerService from './services/CostumerService';
 import UI from './UI';
