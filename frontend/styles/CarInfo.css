@@ -1,0 +1,7 @@
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+.form-section {
+    margin-top: 20px;
+}

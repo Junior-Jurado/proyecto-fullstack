@@ -9,12 +9,11 @@
 </head>
 <body>
     <!-- Barra de Navegación -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary ">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <a class="navbar-brand" href="#">Alquiler de Vehículos</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        
     </nav>
 
     <!-- Sección de Bienvenida -->
@@ -23,92 +22,12 @@
         <p class="lead">Alquila el vehículo perfecto para tu viaje con la mayor comodidad y seguridad.</p>
     </header>
 
-    <!-- Sección de Servicios -->
-    <section id="servicios" class="container py-5 ">
-        <h2 class="text-center text-primary">Nuestros Servicios</h2>
-        <div class="row mt-4">
-            <div class="col-md-4 text-center">
-                <i class="fas fa-car fa-3x text-primary"></i>
-                <h4>Variedad de Vehículos</h4>
-                <p>Escoge entre una amplia gama de vehículos para cada necesidad y presupuesto.</p>
-            </div>
-            <div class="col-md-4 text-center">
-                <i class="fas fa-calendar-alt fa-3x text-primary"></i>
-                <h4>Reservas Flexibles</h4>
-                <p>Reserva y modifica tu reserva fácilmente en cualquier momento.</p>
-            </div>
-            <div class="col-md-4 text-center">
-                <i class="fas fa-headset fa-3x text-primary"></i>
-                <h4>Soporte al Cliente</h4>
-                <p>Recibe asistencia personalizada en todo momento, antes y durante tu alquiler.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Galería de Vehículos -->
     <section id="vehiculos" class="bg-light py-5">
         <div class="container">
             <h2 class="text-center text-primary">Nuestros Vehículos</h2>
-            <div class="row mt-4">
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="https://www.autodato.com/wp-content/uploads/2017/11/Ford-Fiesta-2018-1.jpg.webp" class="card-img-top" alt="Vehículo 1">
-                        <div class="card-body">
-                            <h5 class="card-title">Ford Fiesta</h5>
-                            <p class="card-text">Compacto, ideal para la ciudad.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="https://cdn.motor1.com/images/mgl/6ZzYpG/s1/toyota-corolla-hybrid-2024.webp" class="card-img-top" alt="Vehículo 2">
-                        <div class="card-body">
-                            <h5 class="card-title">Toyota Corolla</h5>
-                            <p class="card-text">Confort y eficiencia para viajes largos.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="https://www.motor.com.co/__export/1718897853203/sites/motor/img/2024/06/20/jeep_wrangler_392_final_edition_01.jpg_2082898349.jpg" class="card-img-top" alt="Vehículo 3">
-                        <div class="card-body">
-                            <h5 class="card-title">Jeep Wrangler</h5>
-                            <p class="card-text">Perfecto para aventuras fuera de carretera.</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="row mt-4" id="vehiculos-container">
+                <!-- Tarjetas de vehículos se insertarán aquí dinámicamente -->
             </div>
-
-            <div class="row mt-4">
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="https://alciautosmazda.com/wp-content/uploads/2019/09/mazda-cx5-lateral-frente.jpg" class="card-img-top" alt="Vehículo 1">
-                        <div class="card-body">
-                            <h5 class="card-title">Mazda-cx5</h5>
-                            <p class="card-text">Compacto, ideal para la ciudad.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="https://www.elcarrocolombiano.com/wp-content/uploads/2019/10/20191031-RENAULT-LOGAN-2020-COLOMBIA-PRECIO-CARACTERISTICAS-VERSIONES-CVT-01.jpg" class="card-img-top" alt="Vehículo 2">
-                        <div class="card-body">
-                            <h5 class="card-title">Renault Logan</h5>
-                            <p class="card-text">Confort y eficiencia para viajes largos.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/2024_Chevrolet_Trax_2RS%2C_front_left%2C_12-10-2023.jpg/280px-2024_Chevrolet_Trax_2RS%2C_front_left%2C_12-10-2023.jpg" class="card-img-top" alt="Vehículo 3">
-                        <div class="card-body">
-                            <h5 class="card-title">chevrolet trax</h5>
-                            <p class="card-text">Perfecto para aventuras fuera de carretera.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </section>
 
@@ -117,7 +36,9 @@
         <p>&copy; 2024 Compañía de Alquiler de Vehículos</p>
     </footer>
 
-    <!-- Bootstrap JS y dependencias -->
+    <!-- Scripts -->
+    <script src="UI.js"></script>
+    <script src="app.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -1,8 +1,6 @@
-/* Establecer el fondo en todo el documento */
-html, body {
+body {
     height: 100%;
     margin: 0;
-    background-color: #9A616D;
 }
 
 .vh-100 {
@@ -89,11 +87,23 @@ p a:hover {
     text-decoration: underline;
 }
 
-
-.gradient-custom-3 {
-/* fallback for old browsers */
-background-color: #9A616D;
+p.mb-6.pb-lg-2 {
+    margin-bottom: 0; /* Elimina el margen inferior para acercarlo al enlace anterior */
+    padding-bottom: 0.5rem;
+    color: #393f81;
 }
+
+p a {
+    color: #393f81;
+    text-decoration: none;
+}
+
+p a:hover {
+    text-decoration: underline;
+}
+
+
+
 .gradient-custom-4 {
 /* fallback for old browsers */
 background: #84fab0;
@@ -114,5 +124,17 @@ background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244
 }
 
 .btn-success:hover {
+    background-color: #333;
+}
+
+.btn-primary {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    width: 100%;
+    font-size: 1.25rem;
+}
+
+.btn-primary:hover {
     background-color: #333;
 }
