@@ -26,6 +26,34 @@ Administrator.create = async (administrator) => {
     ]);
 };
 
+Administrator.login = async(email, password) => {
+    try{
+        const sql = 'SELECT * FROM Administrators WHERE email = $1';
+        const user = await db.oneOrNone(sql, [email]);
+        if(!user){
+            throw new Error('Administrador no encontrado');
+        }
+        const isMatch = password === user.password;
+        if(!isMatch){
+            throw new Error('Contraseña incorrecta');
+        }
+        return{
+            success: true,
+            message: 'Login exitoso',
+            data: {
+                id: user.admin_id,
+                email: user.email,
+            },
+        };
+    }catch(error){
+        console.error('Error al intentar hacer login:', error);
+        return{
+            success: false,
+            message: error.message
+        };
+    }
+};
+
 Administrator.updateVehicleStatus = async (vehicle_id) =>{
     const sql = `
     UPDATE Vehicles

@@ -1,8 +1,10 @@
 import './styles/app.css';
 import './styles/homeScreen.css';
 import './styles/loginAdmin.css';
+import './styles/AdministradorScreen.css';
 
 import CostumerService from './services/CostumerService';
+import AdministratorService from './services/AdministratorService';
 import UI from './UI';
 
 const costumerService = new CostumerService();
@@ -12,7 +14,6 @@ window.addEventListener('DOMContentLoaded', () => {
     // Cuando el DOM se haya cargado completamente, carga los vehículos automáticamente
     if (document.title === "Inicio - Alquiler de Vehículos") {
         ui.renderVehicles();  // Llama a la función renderVehicles desde la UI de forma automática
-        
         // Recuperar el id del usuario desde localStorage
         const userId = localStorage.getItem('userId');
         if (userId) {
@@ -41,10 +42,15 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     const loginButton = document.getElementById('login');
+    const loginButtonAdmin = document.getElementById('btn-login-admin');
     const registerButton = document.getElementById('register-btn');
 
     if (loginButton) {
         loginButton.addEventListener('click', login);
+    }
+
+    if(loginButtonAdmin){
+        loginButtonAdmin.addEventListener('click', loginAdmin);
     }
 
     if (registerButton) {
@@ -57,6 +63,12 @@ async function login() {
     const password = document.getElementById('password').value;
 
     ui.login(email, password);  // Utiliza la instancia de UI para iniciar sesión
+}
+
+async function loginAdmin() {
+    const emailAdmin = document.getElementById('email').value;
+    const passwordAdmin = document.getElementById('password').value;
+    ui.loginAdmin(emailAdmin, passwordAdmin);
 }
 
 async function register() {

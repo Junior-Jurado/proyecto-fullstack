@@ -1,14 +1,17 @@
 import CostumerService from "./services/CostumerService";
 import VehicleService from "./services/VehicleService";
+import AdministratorService from "./services/AdministratorService";
 
 const costumerService = new CostumerService();
 const vehicleService = new VehicleService();
+const administratorService = new AdministratorService();
 
 class UI {
 
     constructor() {
         this.vehicleService = vehicleService;
         this.costumerService = costumerService;
+        this.administratorService = administratorService;
     }
 
     // Método de login
@@ -32,6 +35,26 @@ class UI {
         }
     }
 
+    // Metodo de login de admin
+    async loginAdmin(email, password) {
+        try {
+            const result = await AdministratorService.loginAdmin(email, password);
+            console.log(result);
+
+            if (result.success) {
+                localStorage.setItem('adminId', result.data.id);
+
+                setTimeout(() => {
+                    window.location.href = 'AdministradorScreen.html';
+                }, 1000);
+            } else {
+                alert(result.message || 'Error al iniciar sesión (Administrador)');
+            }
+        } catch (error) {
+            console.error('Error en el login (Administrator): ', error);
+            alert('Hubo un error al procesar tu solicitud');
+        }
+    }
     // Método para cargar los vehículos
     async renderVehicles() {
         const vehicles = await vehicleService.getAvailables();

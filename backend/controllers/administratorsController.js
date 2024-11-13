@@ -49,5 +49,26 @@ module.exports = {
                 error,
             });
         }
+    },
+    async login(req, res, next){
+        try{
+            const { email, password } = req.body;
+            const result = await Administrator.login(email, password);
+            if(result.success){
+                return res.status(200).json(result);
+            }else{
+                return res.status(400).json({
+                    succes: false,
+                    message: result.message,
+                });
+            }
+        }catch(error){
+            console.error('Error en el login del administrador:', error);
+            return res.status(500).json({
+                succes: false,
+                message: 'Hubo un error al procesar el login del administrador',
+                error: error.message,
+            });
+        }
     }
 }
