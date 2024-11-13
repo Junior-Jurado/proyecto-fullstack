@@ -48,5 +48,47 @@ module.exports = {
                 message: 'Error al obtener el vehículo'
             });
         }
+    },
+
+    async changeUnavailable(req, res, next) {
+        try {
+            const { id } = req.params;
+            const vehicle = await Vehicle.changeStateUnavailable(id);
+
+            if (!vehicle) {
+                return res.status(404).json({
+                    success: false,
+                    message: `Vehículo con id ${id} no encontrado`
+                });
+            }
+            return res.status(200).json(vehicle);
+        } catch (error) {
+            console.log(`Error: ${error}`);
+            return res.status(501).json({
+                success: false,
+                message: 'Error al actualizar el estado del vehículo'
+            });
+        }
+    },
+
+    async changeAvailable(req, res, next) {
+        try {
+            const { id } = req.params;
+            const vehicle = await Vehicle.changeStateAvailable(id);
+
+            if (!vehicle) {
+                return res.status(404).json({
+                    success: false,
+                    message: `Vehículo con id ${id} no encontrado`
+                });
+            }
+            return res.status(200).json(vehicle);
+        } catch (error) {
+            console.log(`Error: ${error}`);
+            return res.status(501).json({
+                success: false,
+                message: 'Error al actualizar el estado disponible del vehículo'
+            });
+        } 
     }
 }

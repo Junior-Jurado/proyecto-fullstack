@@ -53,4 +53,18 @@ Booking.create = (booking) => {
 
 } 
 
+Booking.viewBookingByUser = (idUser) => {
+    const sql = `
+        SELECT 
+            * 
+        FROM 
+            Bookings 
+        WHERE 
+            customer_id = $1
+        RETURNING vehicle_id
+    `;
+
+    return db.oneOrNone(sql, idUser);
+}
+
 module.exports = Booking;

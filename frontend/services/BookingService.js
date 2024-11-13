@@ -1,7 +1,7 @@
 class BookingService {
 
     constructor () {
-        this.URI = "http://localhost:3000/api/bookings/"
+        this.URI = "http://localhost:3000/api/bookings";
     }
 
     async createBooking(booking) {
@@ -19,6 +19,11 @@ class BookingService {
                 dropoff: booking.dropoff,
                 description: booking.description
             })
-        })
+        });
+
+        const result = await res.json();
+        return result; 
     }
 }
+
+export default BookingService;

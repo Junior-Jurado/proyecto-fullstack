@@ -37,5 +37,25 @@ Vehicle.getById = async (id) => {
     return db.oneOrNone(sql, id);
 }
 
+Vehicle.changeStateUnavailable = async (id) => {
+    const sql = `
+        UPDATE vehicles
+        SET availability_status = 'unavailable' 
+        WHERE vehicle_id = $1
+        RETURNING vehicle_id
+    `;
+    return db.oneOrNone(sql, id);
+}
+
+Vehicle.changeStateAvailable = async (id) => {
+    const sql = `
+        UPDATE vehicles
+        SET availability_status = 'available' 
+        WHERE vehicle_id = $1
+        RETURNING vehicle_id
+    `
+    return db.oneOrNone(sql, id);
+}
+
 
 module.exports = Vehicle;

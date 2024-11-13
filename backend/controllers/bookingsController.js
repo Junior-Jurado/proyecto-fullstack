@@ -66,6 +66,32 @@ module.exports = {
                 message: `Error al crear la reserva del automovil.`
             });
         }
+    },
+
+    async viewBookingByUser(req, res, next) {
+        try {
+            const { idUser } = req.params;
+            const data = await Booking.viewBookingByUser(idUser);
+
+            const myData = {
+                id: data.booking_id,
+                ...booking
+            };
+
+            return res.status(201).json({
+                success: true,
+                message: 'La reserva se realizó correctamente!!',
+                data: myData
+            })
+
+        } catch (error) {
+            console.log(`Error: ${error}`);
+            return res.status(501).json({
+                success: false,
+                message: `Error al crear la reserva del automovil.`
+            });
+        }
+
     }
     
 
