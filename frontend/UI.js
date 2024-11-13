@@ -38,7 +38,7 @@ class UI {
     // Metodo de login de admin
     async loginAdmin(email, password) {
         try {
-            const result = await AdministratorService.loginAdmin(email, password);
+            const result = await administratorService.loginAdmin(email, password);
             console.log(result);
 
             if (result.success) {

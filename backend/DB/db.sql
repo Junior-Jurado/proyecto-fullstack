@@ -20,7 +20,7 @@ CREATE TABLE Vehicles (
     year INT CHECK (year >= 1900 AND year <= EXTRACT(YEAR FROM CURRENT_DATE)),
     category VARCHAR(50),
     daily_price NUMERIC(10, 2) NOT NULL,
-    availability_status VARCHAR(15) DEFAULT 'available' CHECK (availability_status IN ('available', 'unavailable')),
+    availability_status VARCHAR(15) DEFAULT 'Reservado' CHECK (availability_status IN ('Reservado', 'En uso', 'Finalizado')),
     image VARCHAR(200)
 );
 
