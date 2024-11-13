@@ -45,6 +45,7 @@ CREATE TABLE Bookings (
     end_date DATE NOT NULL,
     pickup_location VARCHAR(100),
     dropoff_location VARCHAR(100),
+    description VARCHAR(255),
     FOREIGN KEY (customer_id) REFERENCES Customers(customer_id) ON DELETE CASCADE,
     FOREIGN KEY (vehicle_id) REFERENCES Vehicles(vehicle_id) ON DELETE SET NULL
 );

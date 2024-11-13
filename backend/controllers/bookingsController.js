@@ -15,5 +15,59 @@ module.exports = {
                 message: 'Error al obtener las reservas'
             });
         }
+    },
+
+    async getBooking(req, res, next) {
+        try {
+            const { idUser, idVehicle } = req.params;
+    
+            // Llamada al método del modelo para obtener la reserva
+            const booking = await Booking.getBooking(idUser, idVehicle);
+    
+            // Verificar si se encontró la reserva
+            if (booking) {
+                return res.status(200).json(booking);
+            } else {
+                return res.status(404).json({
+                    success: false,
+                    message: `No se encontró una reserva para el usuario ${idUser} y el vehículo ${idVehicle}.`
+                });
+            }
+    
+        } catch (error) {
+            console.log(`Error: ${error}`);
+            return res.status(501).json({
+                success: false,
+                message: `Hubo un problema al intentar obtener la reserva del usuario ${idUser} o del vehículo ${idVehicle}.`
+            });
+        }
+    },
+
+    async create(req, res, next) {
+        try {
+            const booking = req.body;
+            const data = await Booking.create(booking);
+
+            const myData = {
+                id: data.booking_id,
+                ...booking
+            };
+
+            return res.status(201).json({
+                success: true,
+                message: 'La reserva se realizó correctamente!!',
+                data: myData
+            })
+
+        } catch (error) {
+            console.log(`Error: ${error}`);
+            return res.status(501).json({
+                success: false,
+                message: `Error al crear la reserva del automovil.`
+            });
+        }
     }
+    
+
+
 }

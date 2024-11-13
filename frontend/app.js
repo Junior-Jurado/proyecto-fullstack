@@ -178,3 +178,46 @@ if (isCarInfoPage()) {
         `;
     }
 }
+
+async function submitCarInfo() {
+    // Extraemos los valores de los campos del formulario de información del vehículo
+    const vehicleMake = document.getElementById('vehicleMake').value;
+    const vehicleModel = document.getElementById('vehicleModel').value;
+    const vehicleYear = document.getElementById('vehicleYear').value;
+    const vehicleColor = document.getElementById('vehicleColor').value;
+    const vehicleLicensePlate = document.getElementById('vehicleLicensePlate').value;
+    const vehiclePrice = document.getElementById('vehiclePrice').value;
+    
+    // Validamos que todos los campos requeridos estén completos
+    if (!vehicleMake || !vehicleModel || !vehicleYear || !vehicleColor || !vehicleLicensePlate || !vehiclePrice) {
+        alert('Por favor, complete todos los campos');
+        return;
+    }
+
+    // Creamos un objeto con los datos del formulario
+    const carInfo = {
+        vehicleMake,
+        vehicleModel,
+        vehicleYear,
+        vehicleColor,
+        vehicleLicensePlate,
+        vehiclePrice
+    };
+
+    try {
+        // Llamamos al servicio que maneja la creación de la información del vehículo
+        const result = await carService.submitCarInfo(carInfo);
+
+        if (result.success) {
+            alert('Vehículo registrado correctamente');
+            setTimeout(() => {
+                window.location.href = 'vehicleList.html'; // Redirigir a la lista de vehículos o donde se requiera
+            }, 1000);
+        } else {
+            alert(result.message || 'Error al registrar el vehículo');
+        }
+    } catch (error) {
+        console.error('Error en el registro del vehículo:', error);
+        alert('Hubo un error al procesar tu solicitud');
+    }
+}
