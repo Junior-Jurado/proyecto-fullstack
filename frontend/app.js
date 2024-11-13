@@ -15,6 +15,22 @@ const ui = new UI();
 
 window.addEventListener('DOMContentLoaded', () => {
 
+    if (document.title === "Calificar Servicio") {
+    const bookingId = localStorage.getItem('bookingId');
+
+        if (bookingId) {
+            console.log("ID de la reserva en calificarServicio:", bookingId);
+
+            // Mostrar el ID de la reserva en algún elemento de la página
+            const bookingIdElement = document.getElementById('booking-id');
+            if (bookingIdElement) {
+                bookingIdElement.textContent = `ID de la reserva: ${bookingId}`;
+            }
+        } else {
+            console.log("No se encontró el ID de la reserva.");
+        }
+    }
+    
     if (document.title === "Reservas Usuario") {
         const userId = localStorage.getItem('userId');
     
@@ -286,6 +302,7 @@ async function loadUserBookings(idUser) {
         if (actionBtn) {
             if (booking.state === 'Finalizado') {
                 actionBtn.addEventListener('click', () => {
+                    localStorage.setItem('bookingId', booking.id);
                     window.location.href = `calificarServicio.html`;
                 });
             } else {
