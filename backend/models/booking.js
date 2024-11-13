@@ -37,9 +37,10 @@ Booking.create = (booking) => {
             end_date, 
             pickup_location, 
             dropoff_location,
-            description
+            description,
+            state
         ) 
-    VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING booking_id ;`;
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING booking_id ;`;
 
     return db.oneOrNone(sql, [
         booking.customer,
@@ -48,9 +49,54 @@ Booking.create = (booking) => {
         booking.end_date,
         booking.pickup,
         booking.dropoff,
-        booking.description
+        booking.description,
+        "Reservado"
     ]);
 
 } 
+
+Booking.viewBookingByUser = (id) => {
+    const sql = `
+        SELECT 
+            * 
+        FROM 
+            Bookings 
+        WHERE 
+            customer_id = $1
+    `;
+
+    return db.manyOrNone(sql, id);
+}
+
+Booking.deleteBooking = (idUser, idVehicle) => {
+    const sql = `
+    DELETE
+    FROM 
+        bookings
+    WHERE 
+        customer_id = $1
+    AND 
+        vehicle_id = $2
+     RETURNING booking_id`
+   ;
+    
+    return db.oneOrNone(sql, [idUser, idVehicle]);
+}
+
+Booking.changeStateBooking = (id, state) => {
+    const sql = `
+        UPDATE 
+            bookings
+        SET 
+            state = $2
+        WHERE 
+            booking_id = $1
+        RETURNING booking_id
+    `;
+    return db.oneOrNone(sql, [id, state]);
+}
+
+
+
 
 module.exports = Booking;

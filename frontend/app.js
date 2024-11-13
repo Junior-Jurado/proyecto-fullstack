@@ -3,12 +3,51 @@ import './styles/homeScreen.css';
 import './styles/loginAdmin.css';
 
 import CostumerService from './services/CostumerService';
+import BookingService from './services/BookingService';
+import VehicleService from './services/VehicleService';
+
 import UI from './UI';
 
 const costumerService = new CostumerService();
+const bookingsService = new BookingService();
+const vehiclesService = new VehicleService();
+
 const ui = new UI();
 
 window.addEventListener('DOMContentLoaded', () => {
+
+    if (document.title === "Calificar Servicio") {
+    const bookingId = localStorage.getItem('bookingId');
+
+        if (bookingId) {
+            console.log("ID de la reserva en calificarServicio:", bookingId);
+
+            // Mostrar el ID de la reserva en algún elemento de la página
+            const bookingIdElement = document.getElementById('booking-id');
+            if (bookingIdElement) {
+                bookingIdElement.textContent = `ID de la reserva: ${bookingId}`;
+            }
+        } else {
+            console.log("No se encontró el ID de la reserva.");
+        }
+    }
+    
+    if (document.title === "Reservas Usuario") {
+        const userId = localStorage.getItem('userId');
+    
+        if (userId) {
+            console.log("ID del usuario logueado en ReservasCustomer:", userId)
+            loadUserBookings(userId);
+        } else {
+            mostrarSinReservas();
+        }
+    
+        // Redirigir a HomeScreen si el usuario no tiene reservas
+        document.getElementById('home-button').addEventListener('click', () => {
+            window.location.href = 'HomeScreen.html';
+        });
+    }
+
     // Cuando el DOM se haya cargado completamente, carga los vehículos automáticamente
     if (document.title === "Inicio - Alquiler de Vehículos") {
         ui.renderVehicles();  // Llama a la función renderVehicles desde la UI de forma automática
@@ -23,20 +62,78 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     if (document.title === "Información del Vehículo") {
-        // Agregar el evento al botón "Volver"
-        const backButton = document.getElementById('backButton');
-        if (backButton) {
-            backButton.addEventListener('click', () => {
-                window.location.href = 'HomeScreen.html'; // Redirige al Home
-            });
-        }
-
         // Añadir evento al formulario de reserva para redirigir al Home al hacer la reserva
         const reservationForm = document.querySelector('form');
-        reservationForm.addEventListener('submit', (event) => {
+        reservationForm.addEventListener('submit', async (event) => {
             event.preventDefault(); // Evita el envío del formulario
-            // Aquí agregar lógica para enviar la reserva, si es necesario
-            window.location.href = 'HomeScreen.html'; // Redirige al Home tras hacer la reserva
+
+            const startDateElem = document.getElementById('startDate');
+            const endDateElem = document.getElementById('endDate');
+            const pickupLocationElem = document.getElementById('pickupLocation'); // Cambiado a pickupLocation
+            const dropoffLocationElem = document.getElementById('dropoffLocation'); // Cambiado a dropoffLocation
+            const additionalInfoElem = document.getElementById('additionalInfo');
+
+            if (startDateElem && endDateElem && pickupLocationElem && dropoffLocationElem && additionalInfoElem) {
+                const startDate = startDateElem.value;
+                const endDate = endDateElem.value;
+                const pickupLocation = pickupLocationElem.value; // Cambiado a pickupLocation
+                const dropoffLocation = dropoffLocationElem.value; // Cambiado a dropoffLocation
+                const additionalInfo = additionalInfoElem.value;
+                
+                // Obtener el ID del vehículo y del usuario desde localStorage
+                const vehicleId = localStorage.getItem('selectedVehicleId');
+                const userId = localStorage.getItem('userId');
+
+                if (!startDate || !endDate || !pickupLocation || !dropoffLocation || !additionalInfo) {
+                    alert("Por favor, complete todos los campos del formulario.");
+                    return;
+                }
+
+                if (!vehicleId || !userId) {
+                    alert("No se encontró el ID del vehículo o del usuario.");
+                    return;
+                }
+
+                const today = new Date().setHours(0, 0, 0, 0); // Establece la hora a 00:00:00 para comparar solo la fecha
+                if (new Date(startDate) < today) {
+                    alert("La fecha de inicio debe ser igual o posterior a la fecha actual.");
+                    return;
+                }
+
+                // Validación: La fecha de endDate debe ser mayor que la fecha de startDate
+                if (new Date(endDate) <= new Date(startDate)) {
+                    alert("La fecha de finalización debe ser posterior a la fecha de inicio.");
+                    return;
+                }
+
+                // Crear la reserva
+                const booking = {
+                    customer: userId,
+                    vehicle: vehicleId,
+                    start_date: startDate,
+                    end_date: endDate,
+                    pickup: pickupLocation, 
+                    dropoff: dropoffLocation, 
+                    description: additionalInfo
+                };
+
+                try {
+                    const result = await bookingsService.createBooking(booking);
+                    const state = await vehiclesService.changeUnavailable(booking.vehicle);
+                    console.log(state);
+                    if (result.success) {
+                        alert('Reserva creada correctamente');
+                        window.location.href = 'HomeScreen.html'; // Redirige al Home tras crear la reserva
+                    } else {
+                        alert('Error al crear la reserva');
+                    }
+                } catch (error) {
+                    console.error('Error al crear la reserva:', error);
+                    alert('Hubo un error al procesar tu reserva');
+                }
+            } else {
+                console.error("Uno o más elementos del formulario no están presentes.");
+            }
         });
     }
 
@@ -116,10 +213,6 @@ if (isCarInfoPage()) {
             console.log("ID del vehículo seleccionado en CarInfo.html:", selectedVehicleId);
             console.log("ID del usuario en CarInfo.html:", userId);
 
-            // Aquí puedes realizar peticiones al backend para obtener más información sobre el vehículo
-            fetchVehicleInfo(selectedVehicleId);
-            fetchUserInfo(userId);
-
             // Mostrar la imagen del vehículo
             const vehicleImageElement = document.getElementById('vehicle-image');
             vehicleImageElement.src = vehicleImage;  // Asignar la URL de la imagen
@@ -129,37 +222,7 @@ if (isCarInfoPage()) {
         }
     };
 
-    // Función para obtener información sobre el vehículo con el ID proporcionado
-    function fetchVehicleInfo(vehicleId) {
-        // Realiza una llamada fetch a tu API o fuente de datos para obtener los detalles del vehículo
-        fetch(`https://miapi.com/vehicles/${vehicleId}`)
-            .then(response => response.json())
-            .then(vehicleData => {
-                console.log("Datos del vehículo:", vehicleData);
-                displayVehicleInfo(vehicleData);
-            })
-            .catch(error => {
-                console.error("Error al obtener información del vehículo:", error);
-            });
-    }
-
-    // Función para obtener información sobre el usuario con el ID proporcionado
-    function fetchUserInfo(userId) {
-        // Realiza una llamada fetch a tu API o fuente de datos para obtener los detalles del usuario
-        fetch(`https://miapi.com/users/${userId}`)
-            .then(response => response.json())
-            .then(userData => {
-                console.log("Datos del usuario:", userData);
-                displayUserInfo(userData);
-            })
-            .catch(error => {
-                console.error("Error al obtener información del usuario:", error);
-            });
-    }
-
-    // Función para mostrar la información del vehículo en la página
     function displayVehicleInfo(vehicleData) {
-        // Aquí puedes actualizar los elementos HTML para mostrar la información del vehículo
         const vehicleTitle = document.getElementById('vehicle-title');
         const vehicleDescription = document.getElementById('vehicle-description');
 
@@ -167,9 +230,7 @@ if (isCarInfoPage()) {
         vehicleDescription.textContent = `Año: ${vehicleData.year} | Categoría: ${vehicleData.category}`;
     }
 
-    // Función para mostrar la información del usuario en la página
     function displayUserInfo(userData) {
-        // Aquí puedes actualizar los elementos HTML para mostrar la información del usuario
         const userInfoDiv = document.getElementById('user-info');
         userInfoDiv.innerHTML = `
             <h2>Información del Usuario</h2>
@@ -180,45 +241,85 @@ if (isCarInfoPage()) {
     }
 }
 
-async function submitCarInfo() {
-    // Extraemos los valores de los campos del formulario de información del vehículo
-    const vehicleMake = document.getElementById('vehicleMake').value;
-    const vehicleModel = document.getElementById('vehicleModel').value;
-    const vehicleYear = document.getElementById('vehicleYear').value;
-    const vehicleColor = document.getElementById('vehicleColor').value;
-    const vehicleLicensePlate = document.getElementById('vehicleLicensePlate').value;
-    const vehiclePrice = document.getElementById('vehiclePrice').value;
-    
-    // Validamos que todos los campos requeridos estén completos
-    if (!vehicleMake || !vehicleModel || !vehicleYear || !vehicleColor || !vehicleLicensePlate || !vehiclePrice) {
-        alert('Por favor, complete todos los campos');
+function mostrarSinReservas() {
+    const bookingList = document.getElementById('booking-list');
+    const noBookings = document.getElementById('no-bookings');
+
+    if (bookingList) bookingList.style.display = 'none';
+    if (noBookings) noBookings.style.display = 'block';
+}
+
+async function loadUserBookings(idUser) {
+    const response = await bookingsService.getBookingsByUser(idUser);
+    const bookingsContainer = document.getElementById('bookings-container');
+    bookingsContainer.innerHTML = '';
+
+    if (!response.success) {
+        bookingsContainer.innerHTML = '<p>No tienes reservas hasta ahora.</p>';
         return;
     }
 
-    // Creamos un objeto con los datos del formulario
-    const carInfo = {
-        vehicleMake,
-        vehicleModel,
-        vehicleYear,
-        vehicleColor,
-        vehicleLicensePlate,
-        vehiclePrice
-    };
+    const bookings = response.data;
+    console.log(bookings);
 
-    try {
-        // Llamamos al servicio que maneja la creación de la información del vehículo
-        const result = await carService.submitCarInfo(carInfo);
+    if (bookings.length === 0) {
+        bookingsContainer.innerHTML = '<p>No tienes reservas en este momento.</p>';
+        return;
+    }
 
-        if (result.success) {
-            alert('Vehículo registrado correctamente');
-            setTimeout(() => {
-                window.location.href = 'vehicleList.html'; // Redirigir a la lista de vehículos o donde se requiera
-            }, 1000);
-        } else {
-            alert(result.message || 'Error al registrar el vehículo');
+    for (const booking of bookings) {
+        const vehicleData = await vehiclesService.getById(booking.vehicle_id);
+
+        const startDate = new Date(booking.start_date);
+        const endDate = new Date(booking.end_date);
+        const daysRented = Math.ceil((endDate - startDate) / (1000 * 3600 * 24));
+
+        const bookingCard = document.createElement('div');
+        bookingCard.classList.add('col-md-6');
+        bookingCard.innerHTML = `
+            <div class="card card-custom shadow-sm">
+                <div class="row no-gutters">
+                    <div class="col-md-5">
+                        <img src="${vehicleData.image || 'https://via.placeholder.com/200'}" 
+                             class="img-fluid rounded-start vehicle-image" alt="Imagen del ${vehicleData.brand} ${vehicleData.model}">
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-body">
+                            <h5 class="card-title">${vehicleData.brand} ${vehicleData.model}</h5>
+                            <p class="card-text">Precio por día: <strong>$${vehicleData.daily_price}</strong></p>
+                            <p class="card-text">Días alquilados: <strong>${daysRented}</strong></p>
+                            <p class="card-text">Total: <strong>$${(daysRented * parseFloat(vehicleData.daily_price)).toFixed(2)}</strong></p>
+                            <button class="btn action-btn ${booking.state === 'Finalizado' ? 'rate-btn' : 'cancel-btn'} btn-block mt-3">
+                                ${booking.state === 'Finalizado' ? 'Calificar Servicio' : 'Cancelar Reserva'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const actionBtn = bookingCard.querySelector('.action-btn');
+
+        if (actionBtn) {
+            if (booking.state === 'Finalizado') {
+                actionBtn.addEventListener('click', () => {
+                    localStorage.setItem('bookingId', booking.id);
+                    window.location.href = `calificarServicio.html`;
+                });
+            } else {
+                actionBtn.addEventListener('click', async () => {
+                    try {
+                        await bookingsService.deleteBooking(idUser, booking.vehicle_id);
+                        await vehiclesService.changeAvailable(booking.vehicle_id);
+
+                        window.location.reload();
+                    } catch (error) {
+                        console.error('Error al cancelar la reserva o actualizar el estado del vehículo:', error);
+                    }
+                });
+            }
         }
-    } catch (error) {
-        console.error('Error en el registro del vehículo:', error);
-        alert('Hubo un error al procesar tu solicitud');
+
+        bookingsContainer.appendChild(bookingCard);
     }
 }

@@ -24,6 +24,28 @@ class VehicleService {
         const data = await res.json();
         return data;
     }
+
+    async changeUnavailable(id) {
+        const res = await fetch(`${this.URI}/changeUnavailable/${id}`,{
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        const data = await res.json();
+        return data;
+    }
+
+    async changeAvailable(id) {
+        const res = await fetch(`${this.URI}/changeAvailable/${id}`,{
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        const data = await res.json();
+        return data;
+    }
 }
 
 export default VehicleService;

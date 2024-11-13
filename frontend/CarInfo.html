@@ -18,8 +18,6 @@
         .navbar {
             background-color: #007bff; /* Color azul primario */
         }
-
-    
     </style>
 </head>
 <body>
@@ -41,22 +39,22 @@
                 <form id="reservation-form">
                     <div class="form-group">
                         <label for="startDate">Fecha de inicio</label>
-                        <input type="date" class="form-control" id="startDate" placeholder="Ingrese la fecha de inicio">
+                        <input type="date" class="form-control" id="startDate" required>
                     </div>
 
                     <div class="form-group">
                         <label for="endDate">Fecha de finalización</label>
-                        <input type="date" class="form-control" id="endDate" placeholder="Ingrese la fecha de finalización">
+                        <input type="date" class="form-control" id="endDate" required>
                     </div>
 
                     <div class="form-group">
                         <label for="pickupLocation">Lugar de recogida</label>
-                        <input type="text" class="form-control" id="pickupLocation" placeholder="Ingrese el lugar de recogida">
+                        <input type="text" class="form-control" id="pickupLocation" required placeholder="Ingrese el lugar de recogida">
                     </div>
 
                     <div class="form-group">
                         <label for="dropoffLocation">Lugar de entrega</label>
-                        <input type="text" class="form-control" id="dropoffLocation" placeholder="Ingrese el lugar de entrega">
+                        <input type="text" class="form-control" id="dropoffLocation" required placeholder="Ingrese el lugar de entrega">
                     </div>
 
                     <div class="form-group">
@@ -71,7 +69,8 @@
     </div>
 
     <script src="app.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- Usamos la versión completa de jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
