@@ -90,8 +90,8 @@ module.exports = {
             }
         }),
         new HtmlWebpackPlugin({
-            template: './frontend/registerAdmin.html', 
-            filename: 'registerAdmin.html', 
+            template: './frontend/loginAdmin.html', 
+            filename: 'loginAdmin.html', 
             minify: {
                 collapseWhitespace: true,
                 removeComments: true,
