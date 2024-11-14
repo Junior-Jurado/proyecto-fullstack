@@ -47,6 +47,21 @@ class BookingService {
         const result = await res.json();
         return result; 
     }
+
+    async changeState(booking) {
+        const res = await fetch(`${this.URI}/changeState`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: booking.booking_id,
+                state: booking.state
+            })
+        });
+        const result = await res.json();
+        return result; 
+    }
 }
 
 export default BookingService;

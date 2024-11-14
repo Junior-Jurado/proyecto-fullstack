@@ -111,6 +111,20 @@ module.exports = {
                 useShortDoctype: true
             }
         }),
+
+        new HtmlWebpackPlugin({
+            template: './frontend/calificarServicio.html', 
+            filename: 'calificarServicio.html', 
+            minify: {
+                collapseWhitespace: true,
+                removeComments: true,
+                removeRedundantAttributes: true,
+                removeScriptTypeAtributtes: true,
+                removeStyleLinkAttributes: true,
+                useShortDoctype: true
+            }
+        }),
+
         new MiniCssExtractPlugin({
             filename: 'css/bundle.css',
         })

@@ -7,5 +7,6 @@ module.exports = (app) => {
     app.get('/api/bookings/user/:idUser/vehicle/:idVehicle', BookingsController.getBooking);
     app.post('/api/bookings/create', BookingsController.create);
     app.delete('/api/bookings/delete/user/:idUser/vehicle/:idVehicle', BookingsController.deleteBooking);
+    app.put('/api/bookings/changeState', BookingsController.changeStateBooking);
     
 }

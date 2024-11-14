@@ -15,6 +15,22 @@ const ui = new UI();
 
 window.addEventListener('DOMContentLoaded', () => {
 
+    if (document.title === "Calificar Servicio") {
+    const bookingId = localStorage.getItem('bookingId');
+
+        if (bookingId) {
+            console.log("ID de la reserva en calificarServicio:", bookingId);
+
+            // Mostrar el ID de la reserva en algún elemento de la página
+            const bookingIdElement = document.getElementById('booking-id');
+            if (bookingIdElement) {
+                bookingIdElement.textContent = `ID de la reserva: ${bookingId}`;
+            }
+        } else {
+            console.log("No se encontró el ID de la reserva.");
+        }
+    }
+    
     if (document.title === "Reservas Usuario") {
         const userId = localStorage.getItem('userId');
     
@@ -196,10 +212,6 @@ if (isCarInfoPage()) {
             console.log("ID del vehículo seleccionado en CarInfo.html:", selectedVehicleId);
             console.log("ID del usuario en CarInfo.html:", userId);
 
-            // Aquí puedes realizar peticiones al backend para obtener más información sobre el vehículo
-            fetchVehicleInfo(selectedVehicleId);
-            fetchUserInfo(userId);
-
             // Mostrar la imagen del vehículo
             const vehicleImageElement = document.getElementById('vehicle-image');
             vehicleImageElement.src = vehicleImage;  // Asignar la URL de la imagen
@@ -209,37 +221,7 @@ if (isCarInfoPage()) {
         }
     };
 
-    // Función para obtener información sobre el vehículo con el ID proporcionado
-    function fetchVehicleInfo(vehicleId) {
-        // Realiza una llamada fetch a tu API o fuente de datos para obtener los detalles del vehículo
-        fetch(`https://miapi.com/vehicles/${vehicleId}`)
-            .then(response => response.json())
-            .then(vehicleData => {
-                console.log("Datos del vehículo:", vehicleData);
-                displayVehicleInfo(vehicleData);
-            })
-            .catch(error => {
-                console.error("Error al obtener información del vehículo:", error);
-            });
-    }
-
-    // Función para obtener información sobre el usuario con el ID proporcionado
-    function fetchUserInfo(userId) {
-        // Realiza una llamada fetch a tu API o fuente de datos para obtener los detalles del usuario
-        fetch(`https://miapi.com/users/${userId}`)
-            .then(response => response.json())
-            .then(userData => {
-                console.log("Datos del usuario:", userData);
-                displayUserInfo(userData);
-            })
-            .catch(error => {
-                console.error("Error al obtener información del usuario:", error);
-            });
-    }
-
-    // Función para mostrar la información del vehículo en la página
     function displayVehicleInfo(vehicleData) {
-        // Aquí puedes actualizar los elementos HTML para mostrar la información del vehículo
         const vehicleTitle = document.getElementById('vehicle-title');
         const vehicleDescription = document.getElementById('vehicle-description');
 
@@ -247,9 +229,7 @@ if (isCarInfoPage()) {
         vehicleDescription.textContent = `Año: ${vehicleData.year} | Categoría: ${vehicleData.category}`;
     }
 
-    // Función para mostrar la información del usuario en la página
     function displayUserInfo(userData) {
-        // Aquí puedes actualizar los elementos HTML para mostrar la información del usuario
         const userInfoDiv = document.getElementById('user-info');
         userInfoDiv.innerHTML = `
             <h2>Información del Usuario</h2>
@@ -257,39 +237,6 @@ if (isCarInfoPage()) {
             <p><strong>Nombre:</strong> ${userData.name}</p>
             <p><strong>Email:</strong> ${userData.email}</p>
         `;
-    }
-}
-async function cargarReservas(idUser) {
-    try {
-        const result = await bookingsService.getBookingsByUser(idUser);
-        if (result.success && result.data.length > 0) {
-            mostrarReservas(result.data);
-        } else {
-            mostrarSinReservas();
-        }
-    } catch (error) {
-        console.error('Error al cargar las reservas:', error);
-        mostrarSinReservas();
-    }
-}
-
-function mostrarReservas(bookings) {
-    const bookingList = document.getElementById('booking-list');
-    if (bookingList) {
-        bookingList.innerHTML = '';
-        bookings.forEach(booking => {
-            const bookingElement = document.createElement('div');
-            bookingElement.classList.add('booking-item');
-            bookingElement.innerHTML = `
-                <h3>Reserva #${booking.booking_id}</h3>
-                <p><strong>Inicio:</strong> ${new Date(booking.start_date).toLocaleDateString()}</p>
-                <p><strong>Fin:</strong> ${new Date(booking.end_date).toLocaleDateString()}</p>
-                <p><strong>Recogida:</strong> ${booking.pickup_location}</p>
-                <p><strong>Devolución:</strong> ${booking.dropoff_location}</p>
-                <p><strong>Descripción:</strong> ${booking.description}</p>
-            `;
-            bookingList.appendChild(bookingElement);
-        });
     }
 }
 
@@ -302,40 +249,30 @@ function mostrarSinReservas() {
 }
 
 async function loadUserBookings(idUser) {
-    // Obtener las reservas del usuario
     const response = await bookingsService.getBookingsByUser(idUser);
-    console.log(response); // Muestra la respuesta en consola para ver el formato exacto
+    const bookingsContainer = document.getElementById('bookings-container');
+    bookingsContainer.innerHTML = '';
 
-    const bookingsContainer = document.querySelector('.container .row');
-    bookingsContainer.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevas tarjetas
-
-    // Verificar si la respuesta tiene status falso
     if (!response.success) {
         bookingsContainer.innerHTML = '<p>No tienes reservas hasta ahora.</p>';
         return;
     }
 
-    // Acceder a los datos de las reservas (response.data)
     const bookings = response.data;
+    console.log(bookings);
 
-    // Verificar si hay reservas
     if (bookings.length === 0) {
         bookingsContainer.innerHTML = '<p>No tienes reservas en este momento.</p>';
         return;
     }
 
-    // Iterar sobre las reservas y generar tarjetas
     for (const booking of bookings) {
-        // Obtener el vehículo asociado a la reserva
         const vehicleData = await vehiclesService.getById(booking.vehicle_id);
-        console.log(vehicleData); // Ver los datos del vehículo en consola
 
-        // Calcular los días alquilados
         const startDate = new Date(booking.start_date);
         const endDate = new Date(booking.end_date);
-        const daysRented = Math.ceil((endDate - startDate) / (1000 * 3600 * 24)); // Calcular los días
+        const daysRented = Math.ceil((endDate - startDate) / (1000 * 3600 * 24));
 
-        // Crear HTML para cada tarjeta de vehículo con los datos obtenidos
         const bookingCard = document.createElement('div');
         bookingCard.classList.add('col-md-6');
         bookingCard.innerHTML = `
@@ -351,32 +288,37 @@ async function loadUserBookings(idUser) {
                             <p class="card-text">Precio por día: <strong>$${vehicleData.daily_price}</strong></p>
                             <p class="card-text">Días alquilados: <strong>${daysRented}</strong></p>
                             <p class="card-text">Total: <strong>$${(daysRented * parseFloat(vehicleData.daily_price)).toFixed(2)}</strong></p>
-                            <button class="btn cancel-btn btn-block mt-3">Cancelar Reserva</button>
+                            <button class="btn action-btn ${booking.state === 'Finalizado' ? 'rate-btn' : 'cancel-btn'} btn-block mt-3">
+                                ${booking.state === 'Finalizado' ? 'Calificar Servicio' : 'Cancelar Reserva'}
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         `;
 
-        // Obtener el botón "Cancelar Reserva" después de agregar el HTML
-        const cancelBtn = bookingCard.querySelector('.cancel-btn');
-        console.log(cancelBtn); // Verificar si el botón fue encontrado
+        const actionBtn = bookingCard.querySelector('.action-btn');
 
-        if (cancelBtn) {
-            cancelBtn.addEventListener('click', async () => {
-                // Llamadas asincrónicas para cancelar la reserva y actualizar el estado del vehículo
-                try {
-                    await bookingsService.deleteBooking(idUser, booking.vehicle_id);
-                    await vehiclesService.changeAvailable(booking.vehicle_id);
-        
-                    window.location.reload();
-                } catch (error) {
-                    console.error('Hubo un error al cancelar la reserva o actualizar el estado del vehículo:', error);
-                }
-            });
+        if (actionBtn) {
+            if (booking.state === 'Finalizado') {
+                actionBtn.addEventListener('click', () => {
+                    localStorage.setItem('bookingId', booking.id);
+                    window.location.href = `calificarServicio.html`;
+                });
+            } else {
+                actionBtn.addEventListener('click', async () => {
+                    try {
+                        await bookingsService.deleteBooking(idUser, booking.vehicle_id);
+                        await vehiclesService.changeAvailable(booking.vehicle_id);
+
+                        window.location.reload();
+                    } catch (error) {
+                        console.error('Error al cancelar la reserva o actualizar el estado del vehículo:', error);
+                    }
+                });
+            }
         }
 
-        // Agregar la tarjeta al contenedor
         bookingsContainer.appendChild(bookingCard);
     }
 }
